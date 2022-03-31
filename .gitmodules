@@ -1,0 +1,9 @@
+[submodule "Adafruit_nRF52_Arduino"]
+	path = Adafruit_nRF52_Arduino
+	url = https://github.com/adafruit/Adafruit_nRF52_Arduino
+[submodule "SWITCHSCIENCE_Arduino_Board_Package"]
+	path = SWITCHSCIENCE_Arduino_Board_Package
+	url = https://github.com/SWITCHSCIENCE/Arduino_Board_Package
+[submodule "CMSIS_5"]
+	path = CMSIS_5
+	url = https://github.com/ARM-software/CMSIS_5
