@@ -10,3 +10,18 @@
 [submodule "Adafruit_Sensor"]
 	path = Adafruit_Sensor
 	url = https://github.com/adafruit/Adafruit_Sensor
+[submodule "Adafruit_NeoPixel"]
+	path = Adafruit_NeoPixel
+	url = https://github.com/adafruit/Adafruit_NeoPixel
+[submodule "Adafruit_AHRS"]
+	path = Adafruit_AHRS
+	url = https://github.com/adafruit/Adafruit_AHRS
+[submodule "Adafruit_Sensor_Calibration"]
+	path = Adafruit_Sensor_Calibration
+	url = https://github.com/adafruit/Adafruit_Sensor_Calibration
+[submodule "SdFat"]
+	path = SdFat
+	url = https://github.com/greiman/SdFat
+[submodule "ArduinoJson"]
+	path = ArduinoJson
+	url = https://github.com/bblanchon/ArduinoJson
