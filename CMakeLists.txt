@@ -12,7 +12,6 @@ foreach(l ${libs})
 endforeach()
 
 list(REMOVE_ITEM libs
-    BLEAdafruitService # Depends Adafruit_Sensor
     BLEHomekit # Depends Bluefruit_FileIO
     )
 
@@ -30,7 +29,7 @@ add_definitions(
     # Arduino
     -DF_CPU=64000000
     -DARDUINO_SSCI_ISP1807_MICRO_BOARD
-    # -DARDUINO
+    -DARDUINO=10803 # 1.8.3
     # -DARDUINO_ARCH_???
     -DARDUINO_BSP_VERSION=\"1.3.0\"
     # USB
@@ -76,6 +75,13 @@ include_directories(
     Adafruit_nRF52_Arduino/cores/nRF5/sysview/SEGGER
     Adafruit_nRF52_Arduino/libraries/Adafruit_TinyUSB_Arduino/src/arduino
     CMSIS_5/CMSIS/Core/Include
+
+    Adafruit_Sensor
+    Adafruit_NeoPixel
+    Adafruit_AHRS/src
+    Adafruit_Sensor_Calibration
+    SdFat/src
+    ArduinoJson/src
     )
 
 
