@@ -53,7 +53,7 @@ add_definitions(
     "-DUSB_PRODUCT=\"SSCI ISP1807 Micro Board\""
     -DNRF52840_XXAA
     # Debug
-    -DCFG_DEBUG=0
+    -DCFG_DEBUG=1
     -DCFG_LOGGER=0
     -DCFG_SYSVIEW=0
     # NRF
@@ -104,11 +104,22 @@ add_library(ArduinoCore STATIC
     SWITCHSCIENCE_Arduino_Board_Package/nrf52/variants/isp1807microboard/variant.cpp
     ${arduinolib_core_srcs})
 
-add_executable(target blink.cpp)
-target_link_libraries(target 
-    ArduinoCore
-    Adafruit_TinyUSB_Arduino
+add_library(target_main blink.cpp)
+add_executable(target dummy.cpp)
+target_link_options(target PRIVATE
+    #-Wl,--print-gc-sections
+    -Wl,--whole-archive
+    -Wl,--start-group
+    $<TARGET_FILE:Adafruit_TinyUSB_Arduino>
+    $<TARGET_FILE:ArduinoCore>
+    $<TARGET_FILE:target_main>
+    -Wl,--end-group
+    -Wl,--no-whole-archive
     )
+add_dependencies(target target_main ArduinoCore Adafruit_TinyUSB_Arduino)
+
+#target_link_libraries(target 
+#    )
 
 add_custom_command(TARGET target
     POST_BUILD
