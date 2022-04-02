@@ -1,3 +1,10 @@
+set(SERIAL "/dev/ttyS5")
+
+# 
+# Prerequisite: nrfutil from
+# https://github.com/adafruit/Adafruit_nRF52_nrfutil
+#
+
 cmake_minimum_required(VERSION 3.10)
 
 project(nrftest C ASM CXX)
@@ -15,6 +22,9 @@ list(REMOVE_ITEM libs
     BLEHomekit # Depends Bluefruit_FileIO
     )
 
+find_program(OBJCOPY arm-none-eabihf-objcopy REQUIRED)
+find_program(NRFUTIL adafruit-nrfutil REQUIRED)
+
 
 set(cpuflags "-mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16")
 set(cflags "-Wall -Wextra -Werror=return-type -Wno-unused-parameter -Wno-missing-field-initializers -Wno-pointer-arith -Ofast -g -ffunction-sections -fdata-sections -nostdlib --param max-inline-insns-single=500 ${cpuflags}")
@@ -30,7 +40,8 @@ add_definitions(
     -DF_CPU=64000000
     -DARDUINO_SSCI_ISP1807_MICRO_BOARD
     -DARDUINO=10803 # 1.8.3
-    # -DARDUINO_ARCH_???
+    -DARDUINO_ARCH_NRF52
+    -DARDUINO_ARCH_NRF52_ADAFRUIT
     -DARDUINO_BSP_VERSION=\"1.3.0\"
     # USB
     -DUSBCON
@@ -43,7 +54,7 @@ add_definitions(
     -DNRF52840_XXAA
     # Debug
     -DCFG_DEBUG=0
-    -DCFG_LOGGER=1
+    -DCFG_LOGGER=0
     -DCFG_SYSVIEW=0
     # NRF
     -DSOFTDEVICE_PRESENT
@@ -97,4 +108,20 @@ add_executable(target blink.cpp)
 target_link_libraries(target 
     ArduinoCore
     Adafruit_TinyUSB_Arduino
+    )
+
+add_custom_command(TARGET target
+    POST_BUILD
+    # generate binary
+    COMMAND ${OBJCOPY} -O binary $<TARGET_FILE:target> $<TARGET_FILE:target>.bin
+    # generate ihex
+    COMMAND ${OBJCOPY} -O ihex $<TARGET_FILE:target> $<TARGET_FILE:target>.hex
+    # generate DFU package
+    COMMAND ${NRFUTIL} dfu genpkg --dev-type 0x52 --sd-req 0x00B6
+    --application $<TARGET_FILE:target>.hex $<TARGET_FILE:target>.dfu.zip
+    )
+
+add_custom_target(write
+    COMMAND ${NRFUTIL} --verbose dfu serial -pkg $<TARGET_FILE:target>.dfu.zip -p ${SERIAL} -b 115200 --singlebank
+    USES_TERMINAL
     )
