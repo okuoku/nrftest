@@ -33,7 +33,7 @@ set(CMAKE_ASM_FLAGS "${cpuflags} -mabi=aapcs")
 set(CMAKE_CXX_FLAGS "${cflags} -std=gnu++11 -fno-rtti -fno-exceptions")
 # FIXME: --specs=nano.specs ?? Maybe we need stdc++_nano etc?
 set(CMAKE_EXE_LINKER_FLAGS
-    "-L ${CMAKE_CURRENT_LIST_DIR}/Adafruit_nRF52_Arduino/cores/nRF5/linker -Wl,-T -Wl,${CMAKE_CURRENT_LIST_DIR}/Adafruit_nRF52_Arduino/cores/nRF5/linker/nrf52840_s140_v6.ld -Wl,--gc-sections -Wl,--unresolved-symbols=report-all -Wl,--warn-common -Wl,--warn-section-align -Wl,--wrap=malloc -Wl,--wrap=free --specs=nosys.specs")
+    "-L ${CMAKE_CURRENT_LIST_DIR}/Adafruit_nRF52_Arduino/cores/nRF5/linker -Wl,-T -Wl,${CMAKE_CURRENT_LIST_DIR}/Adafruit_nRF52_Arduino/cores/nRF5/linker/nrf52840_s140_v6.ld -Wl,--gc-sections -Wl,--unresolved-symbols=report-all -Wl,--warn-common -Wl,--warn-section-align -Wl,--wrap=malloc -Wl,--wrap=free -Wl,--build-id=none --specs=nosys.specs")
 
 add_definitions(
     # Arduino
